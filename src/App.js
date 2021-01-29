@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import items from './data'
+import Categories from './Categories'
+import Menu from './Menu'
+
 
 function App() {
+  const choices = ['all', ...new Set(items.map((item) => item.category))]
+  const [menuItems, setMenuItems] = useState(items)
+  const [options, setOptions] = useState(choices)
+  const filterMenu = (category) => {
+    if (category === 'all'){
+      return setMenuItems(items)
+      
+    }
+    let newMenu = items.filter((item) => item.category === category);
+    setMenuItems(newMenu);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main>
+      <section className='menu section'>
+        <div className='title'>
+          <h2>Our Menu</h2>
+          <div className='underline'></div>
+        </div>
+        <Categories options={options} filterMenu={filterMenu}/>
+        <Menu items={menuItems}/>
+      </section>
+    </main>
+  )
 }
 
-export default App;
+export default App
+
+
